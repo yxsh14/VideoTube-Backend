@@ -3,7 +3,7 @@ class ApiError extends Error {
         statusCode,
         message = "Something in the way",
         errors = [],
-        statck = ""
+        stack = ""
     ) {
         super(message)
         this.statusCode = statusCode
@@ -13,8 +13,8 @@ class ApiError extends Error {
         this.errors = errors
 
         // Stack Trace Likhenge ki developer ko pata chal jaye statck mai kaha dikkat aa rahi
-        if (statck) {
-            this.stack = statck
+        if (stack) {
+            this.stack = stack
         } else {
             Error.captureStackTrace(this, this.constructor)
         }
