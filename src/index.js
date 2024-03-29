@@ -2,7 +2,7 @@ import dotenv from "dotenv"
 import connectDB from "./DB/index.js";
 import { app } from "./app.js";
 dotenv.config({
-    path: './env'
+    path: './.env'
 })
 // This is an async function so it will return a promise and we can access that by using .then,.catch
 const port = process.env.PORT || 8000;

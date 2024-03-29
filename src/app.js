@@ -29,4 +29,4 @@ app.use(cookieParser()) // server can set and remove cookies from browser.
 import userRouter from "./Routes/user.routes.js"
 // app.get use nhi karte qki router is file mai define nhi hai to hum middleware ki madad se route set karenge 
 
-app.use("/users", userRouter);
+app.use("/api/v1/users", userRouter);

@@ -54,7 +54,7 @@ const userSchema = new Schema(
 // yaha arrow function use nhi kiya qki usme this ka access nhi hota na or yaha hume hashing password pr karni hai to obvious har object k reference mai run hona chahiye 
 userSchema.pre("save", async function (next) {
     if (this.isModified("password")) {
-        this.password = bcrypt.hash(this.password, 10);
+        this.password = await bcrypt.hash(this.password, 10);
         return next()
     }
     return next();

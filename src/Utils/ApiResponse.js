@@ -1,4 +1,4 @@
-class ApiResponse {
+export default class ApiResponse {
     constructor(
         statusCode,
         data,
