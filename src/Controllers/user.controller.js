@@ -4,7 +4,7 @@ import { User } from "../Models/user.model.js"
 import { uploadOnCloudinary } from "../Utils/cloudinary.js"
 import ApiResponse from "../Utils/ApiResponse.js"
 import jwt from "jsonwebtoken"
-import mongoose, { Aggregate } from "mongoose"
+import mongoose from "mongoose"
 
 const registerUser = asyncHandler(async (req, res) => {
     // 1. Taking data from frontend
@@ -228,6 +228,7 @@ const updateUserCover = asyncHandler(async (req, res) => {
 })
 const getUserChannelProfile = asyncHandler(async (req, res) => {
     const { username } = req.params;
+    console.log(req.params);
     if (!username?.trim()) {
         throw new ApiError(400, "Username is missing.")
     }
@@ -238,18 +239,24 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
             $match: {
                 username: username?.toLowerCase()
             },
+        },
+        {
             $lookup: {
                 from: "subscriptions", // collection
                 localField: "_id", //user ki id
                 foreignField: "channel", //is user id k channel mai jo document aayenge wo sare subscribers honge 
                 as: "subscribers"
             },
+        },
+        {
             $lookup: {
                 from: "subscriptions", // collection
                 localField: "_id", //user ki id
                 foreignField: "subscriber", //is user id k subscribed mai jo document aayenge wo sare channels honge jinko hume subscribed kiya hai
                 as: "subscribedTo",
             },
+        },
+        {
             $addFields: {
                 subscribersCount: {
                     $size: "$subscribers"
@@ -265,7 +272,6 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
                     }
                 }
             }
-
         },
         {
             $project: {
@@ -294,6 +300,8 @@ const getWatchHistory = asyncHandler(async (req, res) => {
                 _id: new mongoose.Types.ObjectId(req.user._id),
                 // aggregate pipelines mai moongoose ki id direct nhi daal skte .
             },
+
+        }, {
             $lookup: {
                 from: "videos",
                 localField: "watchHistory",
